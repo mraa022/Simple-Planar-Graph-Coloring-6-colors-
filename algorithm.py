@@ -35,16 +35,18 @@ def color_graph(adjacency_matrix):
     
     else:
         removed_v = {}
-        
+        removed_stack = []
         # first color 6 Vs
         while num_verticies>6:
            v = find_deg_most_5(adjacency_matrix,removed_v)
            removed_v[v] = 1
+           removed_stack.append(v)
            num_verticies -=1
         coloring = color_most_six(adjacency_matrix,removed_v)
         
         # then color the rest
-        for vertex in removed_v.keys():
+        while len(removed_stack)!=0:
+            vertex = removed_stack.pop()
             v_neighbor_colors = neighbor_colors(vertex,adjacency_matrix,coloring)
             v_color = set_difference(COLORS,v_neighbor_colors)[0]
             coloring[vertex] = v_color
